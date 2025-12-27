@@ -155,6 +155,12 @@ def main():
     last_sound_time = 0
     sound_cooldown = 0.5  # Minimum time between sounds in seconds
     
+    # Minimum confidence threshold for pose detection
+    # Only predictions with confidence >= this value will be shown
+    # Increase this value (e.g., 0.6 or 0.7) to reduce false positives
+    # Decrease this value (e.g., 0.4) if poses are not being detected
+    MIN_CONFIDENCE_THRESHOLD = 0.5  # 50% confidence minimum
+    
     while True:
         # Read frame from webcam
         ret, frame = cap.read()
@@ -183,6 +189,11 @@ def main():
             pose_prediction, confidence = classifier.predict(pose_landmarks)
             # Get confidence for all classes
             all_confidences = classifier.get_all_confidences(pose_landmarks)
+            
+            # Only accept predictions above minimum confidence threshold
+            if confidence < MIN_CONFIDENCE_THRESHOLD:
+                pose_prediction = "No Pose"
+                confidence = 0.0
         
         # Show current pose in the reference window (always update to keep window visible)
         if pose_prediction != "No Pose" and pose_prediction in reference_images:
@@ -202,15 +213,20 @@ def main():
                    cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
         
         # Show pose prediction with color coding based on confidence
-        if confidence > 0.7:
-            color = (0, 255, 0)  # Green for high confidence
-        elif confidence > 0.4:
-            color = (0, 255, 255)  # Yellow for medium confidence
+        if pose_prediction == "No Pose":
+            color = (128, 128, 128)  # Gray for no pose
+            cv2.putText(frame, f"Pose: {pose_prediction}", (10, 70), 
+                       cv2.FONT_HERSHEY_SIMPLEX, 0.8, color, 2)
         else:
-            color = (0, 0, 255)  # Red for low confidence
-        
-        cv2.putText(frame, f"Pose: {pose_prediction} ({confidence:.2f})", (10, 70), 
-                   cv2.FONT_HERSHEY_SIMPLEX, 0.8, color, 2)
+            if confidence > 0.7:
+                color = (0, 255, 0)  # Green for high confidence
+            elif confidence > 0.5:
+                color = (0, 255, 255)  # Yellow for medium confidence
+            else:
+                color = (0, 0, 255)  # Red for low confidence
+            
+            cv2.putText(frame, f"Pose: {pose_prediction} ({confidence:.2f})", (10, 70), 
+                       cv2.FONT_HERSHEY_SIMPLEX, 0.8, color, 2)
         
         # Show all confidences for debugging
         if all_confidences:
