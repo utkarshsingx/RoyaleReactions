@@ -1,0 +1,95 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+.pytest_cache/
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Icon*
+
+# Project specific
+# Keep the trained model for users
+# pose_classifier_model.pkl
+
+# Keep sample data for users
+# pose_data/
+
+# Keep reference images and sounds
+# images/
+# sounds/
+
+# Screenshots and temporary files
+!images/*.png
+holistic_detection_screenshot.png
+
+# Data collection backups (keep latest, ignore timestamped ones)
+pose_data/pose_features_*.npy
+pose_data/pose_labels_*.npy
+pose_data/pose_metadata_*.json
+!pose_data/pose_features_latest.npy
+!pose_data/pose_labels_latest.npy
+!pose_data/pose_metadata_latest.json
+
+# Archive files
+*.zip
+.gitignore
